@@ -1,0 +1,21 @@
+﻿@model List<CIS229C_II_Project.Models.JobDTO>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+<!-- This file is to display the data from the model in table format-->
+<h2>@ViewBag.message</h2>
+
+<table class="table">
+    <tr>
+        <th>Job Number</th>
+        <th>Customer</th>
+    </tr>
+    @foreach (var job in Model)
+    {
+        <tr>
+            <td>@job.JobCompleted.ToString()</td>
+            <td>@job.JobCompleted.ToString()</td>
+        </tr>
+    }
+</table>
