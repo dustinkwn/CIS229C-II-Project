@@ -1,0 +1,42 @@
+﻿@model List<CIS229C_II_Project.Models.Customer>
+@{
+    ViewBag.Title = "Create Job";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div style="position: fixed; left: 0px; right: 0px; bottom: 0px; top: 0px; margin: auto; border: 1px solid; Width: 400px; height: 500px">
+    <div style="position: absolute; left: 0px; right: 0px; bottom: 0px; top: 0px; margin: auto;  Width: 350px; height: 450px">
+
+        <h1 style="text-align:center"> Create Job </h1>
+
+        <form method="post" action="@Url.Action("CreateJob","Job")">
+            <div class="mb-3">
+                <label for="Customer Name" class="form-label"> Customer Name </label>
+                <select name="CustomerID" required>
+                    <option value disabled selected></option>
+                    @foreach (var customer in Model)
+                    {
+                        <option value="@customer.ID"> @customer.FirstName @customer.LastName </option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="Job Technician Name" class="form-label"> Technician Name </label>
+                <input type="text" class="form-control" id="jobInfo" name="JobTechnician" required>
+            </div>
+            <div class="mb-3">
+                <label for="Job start time" class="form-label"> Start Date and Time </label>
+                <input type="datetime" class="form-control" id="jobInfo" name="JobCurrent" required>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
+            </div>
+
+            <div>@ViewBag.Message</div>
+
+        </form>
+                
+    </div>
+</div>
+

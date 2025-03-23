@@ -6,22 +6,21 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using CIS229C_II_Project.Models;
+using System.Web.Helpers;
 
 namespace CIS229C_II_Project.DataAccessLayer
 {
-    public class CustomerDataAccess
+    public class JobDataAccess
     {
-        public List<Models.Customer> GetCustomerList() 
-        { 
-            List<Models.Customer> customers = new List<Models.Customer>();
-
-            // database object access
+        public List<Models.Job> GetJobList ()
+        {
+            List<Models.Job> jobs = new List<Models.Job>();
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
             try
             {
                 sqlConnection.Open();
-                String query = "GetCustomerList";
+                String query = "GetJobList";
                 SqlCommand cmd = new SqlCommand(query, sqlConnection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
@@ -29,15 +28,23 @@ namespace CIS229C_II_Project.DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        Customer tempCustomer = new Customer();
+                        Job tempJob = new Job();
 
-                        tempCustomer.ID = Convert.ToInt32(reader["customer_id"]);
-                        tempCustomer.FirstName = reader["customer_fname"].ToString(); 
-                        tempCustomer.LastName = reader["customer_lname"].ToString();
-                        tempCustomer.Email = reader["customer_email"].ToString();
-                        tempCustomer.Phone = reader["customer_phone"].ToString();
+                        tempJob.ID = Convert.ToInt32(reader["job_id"]);
+                        tempJob.Technician = reader["job_technician"].ToString();
+                        tempJob.Created = Convert.ToDateTime(reader["job_created"]);
+                        
+                        if (reader.IsDBNull(reader.GetOrdinal("job_finished")))
+                        {
+                            tempJob.Finished = null;
+                        }
+                        else
+                        {
+                            tempJob.Finished = Convert.ToDateTime(reader["job_finished"]);
+                        }
+                        tempJob.CustomerID = Convert.ToInt32(reader["customer_id"]);
 
-                        customers.Add(tempCustomer);
+                        jobs.Add(tempJob);
                     }
                 }
                 sqlConnection.Close();
@@ -46,33 +53,29 @@ namespace CIS229C_II_Project.DataAccessLayer
             {
                 sqlConnection.Close();
             }
-
-            return customers;
+            return jobs;
         }
-        public bool CreateCustomer(string firstName, string lastName, string email, string phoneNumber)
+        public bool CreateJob(int customerID, string technician, DateTime created)
         {
-            // database record creation
             bool success = true;
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
             try
             {
                 sqlConnection.Open();
-                String query = "CreateCustomer";
+                String query = "CreateJob";
                 SqlCommand cmd = new SqlCommand(query, sqlConnection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
-                cmd.Parameters.AddWithValue("@CustomerFirstName", SqlDbType.VarChar).Value = firstName;
-                cmd.Parameters.AddWithValue("@CustomerLastName", SqlDbType.VarChar).Value = lastName;
-                cmd.Parameters.AddWithValue("@CustomerEmail", SqlDbType.VarChar).Value = email;
-                cmd.Parameters.AddWithValue("@CustomerPhone", SqlDbType.VarChar).Value = phoneNumber;
+                cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
+                cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
+                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = null;
+                cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-
-                        if (reader["customer_fname"].ToString().Equals(firstName) && reader["customer_lname"].ToString().Equals(lastName) 
-                            && reader["customer_email"].ToString().Equals(email) && reader["customer_phone"].ToString().Equals(phoneNumber))
+                        if (Convert.ToInt32(reader["customer_id"]).Equals(customerID) && reader["job_technician"].ToString().Equals(technician))
                         {
                             success = true;
                             break;
@@ -81,8 +84,6 @@ namespace CIS229C_II_Project.DataAccessLayer
                         {
                             success = false;
                         }
-
-
                     }
                 }
                 sqlConnection.Close();
@@ -94,33 +95,33 @@ namespace CIS229C_II_Project.DataAccessLayer
             }
             return success;
         }
-        public bool EditCustomer(int customerID, string firstName, string lastName, string email, string phoneNumber)
+        public bool EditJob(int id, int customerID, string technician, DateTime created, DateTime? finished = null)
         {
-            // database update code
             bool success = true;
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
             try
             {
                 sqlConnection.Open();
-                String query = "EditCustomer";
+                String query = "EditJob";
                 SqlCommand cmd = new SqlCommand(query, sqlConnection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
 
+                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = id;
                 cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
-                cmd.Parameters.AddWithValue("@CustomerFirstName", SqlDbType.VarChar).Value = firstName;
-                cmd.Parameters.AddWithValue("@CustomerLastName", SqlDbType.VarChar).Value = lastName;
-                cmd.Parameters.AddWithValue("@CustomerEmail", SqlDbType.VarChar).Value = email;
-                cmd.Parameters.AddWithValue("@CustomerPhone", SqlDbType.VarChar).Value = phoneNumber;
-
+                cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
+                cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
+                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
+                
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        if (reader["customer_fname"].ToString().Equals(firstName) && reader["customer_lname"].ToString().Equals(lastName)
-                            && reader["customer_email"].ToString().Equals(email) && reader["customer_phone"].ToString().Equals(phoneNumber)
-                            && Convert.ToInt32(reader["customer_id"]).Equals(customerID))
+                        if (Convert.ToInt32(reader["job_id"]).Equals(id) && reader["job_technician"].ToString().Equals(technician)
+                            && Convert.ToDateTime(reader["job_created"]).Equals(created) && 
+                            (reader.IsDBNull(reader.GetOrdinal("job_finished")) || Convert.ToDateTime(reader["job_finished"]).Equals(finished)) )
+                            
                         {
                             success = true;
                             break;
@@ -129,8 +130,6 @@ namespace CIS229C_II_Project.DataAccessLayer
                         {
                             success = false;
                         }
-
-
                     }
                 }
                 sqlConnection.Close();
@@ -142,22 +141,20 @@ namespace CIS229C_II_Project.DataAccessLayer
             }
             return success;
         }
-        public bool DeleteCustomer(int customerID)
+        public bool DeleteJob(int id)
         {
-            // add database deletion
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
             try
             {
                 sqlConnection.Open();
-                String query = "DeleteCustomer";
+                String query = "DeleteJob";
                 SqlCommand cmd = new SqlCommand(query, sqlConnection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
-                cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
+                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = id;
                 cmd.ExecuteNonQuery();
                 sqlConnection.Close();
-
             }
             catch (Exception e)
             {
@@ -165,6 +162,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 return false;
             }
             return true;
+          
         }
     }
 }
