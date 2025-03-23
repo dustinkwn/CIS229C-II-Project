@@ -123,13 +123,16 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobController.cs" />
     <Compile Include="DataAccessLayer\CustomerDataAccess.cs" />
     <Compile Include="DataAccessLayer\DataAccess.cs" />
+    <Compile Include="DataAccessLayer\JobDataAccess.cs" />
     <Compile Include="DataAccessLayer\ServiceDataAccess.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Job.cs" />
     <Compile Include="Models\JobDTO.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -190,6 +193,9 @@
     <Content Include="Views\Customer\CreateCustomer.cshtml" />
     <Content Include="Views\Customer\EditCustomer.cshtml" />
     <Content Include="Views\Customer\DeleteCustomer.cshtml" />
+    <Content Include="Views\Job\CreateJob.cshtml" />
+    <Content Include="Views\Job\EditJob.cshtml" />
+    <Content Include="Views\Job\DeleteJob.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
