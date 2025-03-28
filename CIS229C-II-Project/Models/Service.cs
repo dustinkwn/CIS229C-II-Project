@@ -7,10 +7,19 @@ namespace CIS229C_II_Project.Models
 {
     public class Service
     {
-        public Service() { }
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public double Cost { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int service_id { get; set; }
+
+        [Required]
+        public string service_name { get; set; }
+
+        public string service_description { get; set; }
+
+        [Required]
+        public int service_price { get; set; }
+
+        public int CustomerID { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }
