@@ -15,7 +15,7 @@ namespace CIS229C_II_Project.Controllers
         {
             List<Models.JobDTO> customerList = new List<Models.JobDTO>();
             DataAccess customerServiceData = new DataAccess();
-            customerList = customerServiceData.GetCustomerServiceList();
+            //customerList = customerServiceData.GetCustomerServiceList();
             return View(customerList);
         }
         [HttpGet]
@@ -23,7 +23,7 @@ namespace CIS229C_II_Project.Controllers
         {
             List<Models.JobDTO> jobDTOList = new List<Models.JobDTO>();
             DataAccess jobDTOData = new DataAccess();
-            jobDTOList = jobDTOData.GetJobDTOList();
+            //jobDTOList = jobDTOData.GetJobDTOList();
             return View(jobDTOList);
         }
         [HttpGet]
