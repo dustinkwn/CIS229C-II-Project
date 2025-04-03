@@ -13,5 +13,6 @@ namespace CIS229C_II_Project.Models
         public DateTime Created { get; set; }
         public DateTime? Finished { get; set; }
         public int CustomerID { get; set; }
+        public List<Service> ServiceList { get; set; }
     }
 }

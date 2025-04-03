@@ -5,12 +5,11 @@ using System.Web;
 
 namespace CIS229C_II_Project.Models
 {
-    public class Service
-    {
-        public Service() { }
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public double Cost { get; set; }
+    public class Service{
+        public string service_name { get; set; }
+
+        public string service_description { get; set; }
+
+        public int service_price { get; set; }
     }
 }

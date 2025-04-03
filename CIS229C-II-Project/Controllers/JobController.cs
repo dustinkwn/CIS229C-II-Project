@@ -13,9 +13,9 @@ namespace CIS229C_II_Project.Controllers
         [HttpGet]
         public ActionResult CreateJob()
         {
-            List<Models.Customer> customerList = new List<Models.Customer>();
-            CustomerDataAccess customerData = new CustomerDataAccess();
-            customerList = customerData.GetCustomerList();
+            List<Models.JobDTO> customerList = new List<Models.JobDTO>();
+            DataAccess customerServiceData = new DataAccess();
+            customerList = customerServiceData.GetCustomerServiceList();
             return View(customerList);
         }
         [HttpGet]
