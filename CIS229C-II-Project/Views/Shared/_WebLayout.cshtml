@@ -1,19 +1,12 @@
 ﻿
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-</head>
-<body>
-    <div> 
+<div style="text-align: left;">
+    <div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
         @RenderBody()
     </div>
-</body>
-</html>
+</div>
+
+
