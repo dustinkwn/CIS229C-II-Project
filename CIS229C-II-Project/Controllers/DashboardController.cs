@@ -13,8 +13,8 @@ namespace CIS229C_II_Project.Controllers
         public ActionResult Dashboard()
         {
             DataAccess data = new DataAccess();
-            //List<Models.JobDTO> userList = data.GetJobDTOList();
-            return View("Dashboard");
+            Models.JobDTO userList = data.GetJobDTO();
+            return View( userList);
         }
     }
 }

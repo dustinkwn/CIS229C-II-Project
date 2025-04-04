@@ -13,18 +13,42 @@ namespace CIS229C_II_Project.Controllers
         [HttpGet]
         public ActionResult CreateJob()
         {
-            List<Models.JobDTO> customerList = new List<Models.JobDTO>();
-            DataAccess customerServiceData = new DataAccess();
-            //customerList = customerServiceData.GetCustomerServiceList();
-            return View(customerList);
+            Models.JobDTO dtoData = new Models.JobDTO();
+            DataAccess dtoDataAccess = new DataAccess();
+            dtoData = dtoDataAccess.GetJobDTO();
+            return View(dtoData);
+        }
+        
+        [HttpPost]
+        public ActionResult CreateJob(int CustomerID, string JobTechnician, DateTime JobCreated, DateTime? JobFinished,List<int> ServiceList)
+        {
+            Models.JobDTO dtoData = new Models.JobDTO();
+            DataAccess dtoDataAccess = new DataAccess();
+            dtoData = dtoDataAccess.GetJobDTO();
+            if (ServiceList != null && ServiceList.Count > 0)
+            {
+                foreach (var service in ServiceList) {
+                    ViewBag.Message += " " + service;
+                }
+                //ViewBag.Message = ServiceList;
+            }
+            return View(dtoData);
         }
         [HttpGet]
         public ActionResult EditJob()
         {
-            List<Models.JobDTO> jobDTOList = new List<Models.JobDTO>();
+            Models.JobDTO dtoData = new Models.JobDTO();
             DataAccess jobDTOData = new DataAccess();
-            //jobDTOList = jobDTOData.GetJobDTOList();
-            return View(jobDTOList);
+            dtoData = jobDTOData.GetJobDTO();
+            return View(dtoData);
+        }
+        [HttpPost]
+        public ActionResult EditJob(int b)
+        {
+            Models.JobDTO dtoData = new Models.JobDTO();
+            DataAccess jobDTOData = new DataAccess();
+            dtoData = jobDTOData.GetJobDTO();
+            return View(dtoData);
         }
         [HttpGet]
         public ActionResult DeleteJob()
@@ -34,6 +58,14 @@ namespace CIS229C_II_Project.Controllers
             jobList = jobData.GetJobList();
             return View(jobList);
         }
+        public ActionResult DeleteJob(int JobID)
+        {
+            List<Models.Job> jobList = new List<Models.Job>();
+            JobDataAccess jobData = new JobDataAccess();
+            jobList = jobData.GetJobList();
+            return View(jobList);
+        }
+
 
     }
 }

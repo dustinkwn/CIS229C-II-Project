@@ -1,4 +1,4 @@
-﻿@model List<CIS229C_II_Project.Models.JobDTO>
+﻿@model CIS229C_II_Project.Models.JobDTO
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
@@ -8,14 +8,14 @@
 
 <table class="table">
     <tr>
-        <th>Job Number</th>
+        <th>Customer</th>
         <th>Customer</th>
     </tr>
-    @foreach (var job in Model)
+    @foreach (var customer in Model.CustomerList)
     {
         <tr>
-            <td>@job.JobCompleted.ToString()</td>
-            <td>@job.JobCompleted.ToString()</td>
+            <td>@customer.FirstName @customer.LastName</td>
+            <td></td>
         </tr>
     }
 </table>

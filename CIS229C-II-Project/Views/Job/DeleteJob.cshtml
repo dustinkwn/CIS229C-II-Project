@@ -4,5 +4,22 @@
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
 
+<h1 style="text-align:center"> Delete Job </h1>
 
+<form method="post" action="@Url.Action("EditJob","Job")">
+    <div class="mb-3">
+        <label for="Old Job Name" class="form-label"> Job To Delete </label>
+        <select name="JobID" required>
+            <option value disabled selected></option>
+            @foreach (var job in Model)
+            {
+                <option value="@job.ID"> @job.GetString() </option>
+            }
+        </select>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
+    </div>
+    <div>@ViewBag.Message</div>
 
+</form>
