@@ -5,9 +5,30 @@ using System.Web;
 
 namespace CIS229C_II_Project.Models
 {
-    public class Job
+    public class Job : Outputable
     {
-        public Job() { }
+        public string GetString()
+        {
+            string finished = "";
+            if (Finished == null)
+            {
+                finished = "Incomplete";
+            }
+            else
+            {
+                finished = "Done";
+            }
+            return "Status: " + finished + " Customer: " + CustomerID + " Tech:" + Technician + " Start: " + Created;
+        }
+        public Job()
+        {
+            ID = -1;
+            Technician = "";
+            Created = new DateTime();
+            Finished = null;
+            CustomerID = -1;
+            ServiceList = new List<Service>();
+        }
         public int ID { get; set; }
         public string Technician { get; set; }
         public DateTime Created { get; set; }

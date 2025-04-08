@@ -5,9 +5,12 @@ using System.Web;
 
 namespace CIS229C_II_Project.Models
 {
-    public class Customer
+    public class Customer : Outputable
     {
-
+        public string GetString()
+        {
+            return FirstName + " " + LastName;
+        }
         public Customer() { }
 
         public int ID { get; set; }
