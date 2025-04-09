@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using System.Xml.Linq;
 
 namespace CIS229C_II_Project.DataAccessLayer
 {
@@ -35,7 +37,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                                         service_id = Convert.ToInt32(reader["service_id"]),
                                         service_name = reader["service_name"].ToString(),
                                         service_description = reader["service_description"].ToString(),
-                                        service_price = Convert.ToInt32(reader["service_price"]),
+                                        service_price = Convert.ToDecimal(reader["service_price"]),
                                     };
 
                                     services.Add(serv);
@@ -50,47 +52,48 @@ namespace CIS229C_II_Project.DataAccessLayer
                 }
                 return services;
             }
-            public bool CreateService(int customerID, string technician, DateTime created)
-        {
-            bool success = true;
-            String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
-            SqlConnection sqlConnection = new SqlConnection(connString);
-            try
+
+            public bool CreateService(int serviceId, string serviceName, string serviceDescription, decimal servicePrice)
             {
-                sqlConnection.Open();
-                String query = "CreateService";
-                SqlCommand cmd = new SqlCommand(query, sqlConnection);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandTimeout = 0;
-                cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
-                cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
-                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = null;
-                cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                bool success = true;
+                String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
+                SqlConnection sqlConnection = new SqlConnection(connString);
+                try
                 {
-                    while (reader.Read())
+                    sqlConnection.Open();
+                    String query = "CreateService";
+                    SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    cmd.Parameters.AddWithValue("@service_di", serviceId);
+                    cmd.Parameters.AddWithValue("@service_name", serviceName);
+                    cmd.Parameters.AddWithValue("@service_description", serviceDescription);
+                    cmd.Parameters.AddWithValue("@service_price", servicePrice);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (Convert.ToInt32(reader["customer_id"]).Equals(customerID) && reader["job_technician"].ToString().Equals(technician))
+                        while (reader.Read())
                         {
-                            success = true;
-                            break;
-                        }
-                        else
-                        {
-                            success = false;
+                            if (Convert.ToInt32(reader["service_id"]).Equals(serviceId))
+                            {
+                                success = true;
+                                break;
+                            }
+                            else
+                            {
+                                success = false;
+                            }
                         }
                     }
+                    sqlConnection.Close();
                 }
-                sqlConnection.Close();
-            }
-            catch (Exception e)
-            {
-                sqlConnection.Close();
-                return false;
-            }
-            return success;
+                catch (Exception e)
+                {
+                    sqlConnection.Close();
+                    return false;
+                }
+                return success;
         }
-        public bool EditService(int id, int customerID, string technician, DateTime created, DateTime? finished = null)
+        public bool EditService(int serviceId, string serviceName, string serviceDescription, decimal servicePrice)
         {
             bool success = true;
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
@@ -103,19 +106,17 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
 
-                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = service_id;
-                cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
-                cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
-                cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
-                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
+                cmd.Parameters.AddWithValue("@service_id", SqlDbType.Int).Value = serviceId;
+                cmd.Parameters.AddWithValue("@service_name", SqlDbType.Int).Value = serviceName;
+                cmd.Parameters.AddWithValue("@service_description", SqlDbType.VarChar).Value = serviceDescription;
+                cmd.Parameters.AddWithValue("@service_price", SqlDbType.Decimal).Value = servicePrice;
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        if (Convert.ToInt32(reader["job_id"]).Equals(id) && reader["job_technician"].ToString().Equals(technician)
-                            && Convert.ToDateTime(reader["job_created"]).Equals(created) &&
-                            (reader.IsDBNull(reader.GetOrdinal("job_finished")) || Convert.ToDateTime(reader["job_finished"]).Equals(finished)))
+                        if (Convert.ToInt32(reader["service_id"]).Equals(serviceId) && reader["service_name"].ToString().Equals(serviceName)
+                            && reader["service_description"].ToString().Equals(serviceDescription) && Convert.ToDecimal(reader["service_price"]).Equals(servicePrice))
 
                         {
                             success = true;
