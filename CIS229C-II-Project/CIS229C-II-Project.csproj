@@ -199,10 +199,12 @@
     <Content Include="Views\Job\CreateJob.cshtml" />
     <Content Include="Views\Job\EditJob.cshtml" />
     <Content Include="Views\Job\DeleteJob.cshtml" />
+    <Content Include="Views\Service\CreateService.cshtml" />
+    <Content Include="Views\Service\EditService.cshtml" />
+    <Content Include="Views\Service\DeleteView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Service\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
