@@ -43,7 +43,7 @@ namespace CIS229C_II_Project.Controllers
             return View(dtoData);
         }
         [HttpPost]
-        public ActionResult EditJob(int b)
+        public ActionResult EditJob(int jobID, int CustomerID, string JobTechnician, DateTime JobCreated, DateTime? JobFinished, List<int> ServiceList)
         {
             Models.JobDTO dtoData = new Models.JobDTO();
             DataAccess jobDTOData = new DataAccess();

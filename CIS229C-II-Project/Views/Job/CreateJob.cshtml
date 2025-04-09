@@ -33,11 +33,11 @@
 
     <div class="mb-3">
         <label for="Service List" class="form-label"> Service Selection </label>
-        @foreach (var customer in Model.CustomerList)
+        @foreach (var service in Model.ServiceList)
         {
             <br />
-            <label for="Customer Name" class="form-label"> @customer.ID </label>
-            <input type="checkbox" for="ServiceSelection" name="ServiceList" value="@customer.ID">@customer.FirstName @customer.LastName
+            <label for="Customer Name" class="form-label"> @service.service_name </label>
+            <input type="checkbox" for="ServiceSelection" name="ServiceList" value="@service.service_id">@service.service_price @service.service_name
 
         }
 

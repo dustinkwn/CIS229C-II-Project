@@ -103,7 +103,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
 
-                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = service_id;
+                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = id;
                 cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
                 cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
                 cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;

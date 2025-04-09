@@ -30,19 +30,19 @@ namespace CIS229C_II_Project.DataAccessLayer
                     {
                         Job tempJob = new Job();
 
-                        tempJob.ID = Convert.ToInt32(reader["job_id"]);
-                        tempJob.Technician = reader["job_technician"].ToString();
-                        tempJob.Created = Convert.ToDateTime(reader["job_created"]);
+                        tempJob.JobID = Convert.ToInt32(reader["job_id"]);
+                        tempJob.CustomerID = Convert.ToInt32(reader["customer_id"]);
+                        tempJob.JobTechnician = reader["job_technician"].ToString();
+                        tempJob.JobCreated = Convert.ToDateTime(reader["job_created"]);
                         
                         if (reader.IsDBNull(reader.GetOrdinal("job_finished")))
                         {
-                            tempJob.Finished = null;
+                            tempJob.JobFinished = null;
                         }
                         else
                         {
-                            tempJob.Finished = Convert.ToDateTime(reader["job_finished"]);
+                            tempJob.JobFinished = Convert.ToDateTime(reader["job_finished"]);
                         }
-                        tempJob.CustomerID = Convert.ToInt32(reader["customer_id"]);
 
                         jobs.Add(tempJob);
                     }
@@ -141,7 +141,7 @@ namespace CIS229C_II_Project.DataAccessLayer
             }
             return success;
         }
-        public bool DeleteJob(int id)
+        public bool DeleteJob(int jobId)
         {
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
@@ -152,7 +152,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 SqlCommand cmd = new SqlCommand(query, sqlConnection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
-                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = id;
+                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobId;
                 cmd.ExecuteNonQuery();
                 sqlConnection.Close();
             }
