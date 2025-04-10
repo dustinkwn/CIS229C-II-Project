@@ -9,6 +9,12 @@ namespace CIS229C_II_Project.Controllers
 {
     public class ServiceController : Controller
     {
+        [HttpPost]
+        public ActionResult CreateService(string serviceName, string serviceDescription, decimal servicePrice)
+        {
+           
+            return View();
+        }
         // GET: Service
         [HttpGet]
         public ActionResult CreateService()
