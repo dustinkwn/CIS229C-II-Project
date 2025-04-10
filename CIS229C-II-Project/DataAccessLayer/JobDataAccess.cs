@@ -55,11 +55,12 @@ namespace CIS229C_II_Project.DataAccessLayer
             }
             return jobs;
         }
-        public bool CreateJob(int customerID, string technician, DateTime created)
+        public bool CreateJob(int customerID, string technician, DateTime created,DateTime? finished, List<int> serviceIDs)
         {
             bool success = true;
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
+            int jobID = -1;
             try
             {
                 sqlConnection.Open();
@@ -69,13 +70,125 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandTimeout = 0;
                 cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
                 cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
-                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = null;
+                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
                 cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        if (Convert.ToInt32(reader["customer_id"]).Equals(customerID) && reader["job_technician"].ToString().Equals(technician))
+                        // Checks that the record is in the system 
+                        if (Convert.ToInt32(reader["customer_id"]).Equals(customerID) && reader["job_technician"].ToString().Equals(technician)
+                            && Convert.ToDateTime(reader["job_created"]).Equals(created))
+                        {
+                            success = true;
+                            jobID = Convert.ToInt32(reader["job_id"]);
+                            break;
+                        }
+                        else
+                        {
+                            success = false;
+                        }
+                    }
+                }
+                sqlConnection.Close();
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+                return false;
+            }
+            if (jobID == -1 || success == false)
+            {
+                return false;
+            }
+            try
+            {
+                sqlConnection.Open();
+                // Delete old receipt entries
+                String query = "DeleteLinkJobService";
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                // Creates receipt records to link one job with many services
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
+                    
+                    sqlConnection.Close();
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+                return false;
+            }
+
+            try
+            {
+                sqlConnection.Open();
+                // Link new Entries
+                String query = "LinkJobService";
+                SqlCommand cmd;
+                // Creates receipt records to link one job with many services
+                foreach (int serviceNum in serviceIDs)
+                {
+                    
+                    cmd = new SqlCommand(query, sqlConnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
+                    cmd.Parameters.AddWithValue("@ServiceID", SqlDbType.Int).Value = serviceNum;
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (Convert.ToInt32(reader["job_id"]).Equals(jobID) && serviceIDs.Contains( Convert.ToInt32(reader["service_id"])))
+                            {
+                                success = true;
+                                
+                            }
+                            else
+                            {
+                                success = false;
+                                break;
+                            }
+                        }
+                    }
+                    sqlConnection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+                return false;
+            }
+            return success;
+        }
+
+        public bool EditJob(int jobID, int customerID, string technician, DateTime created, DateTime? finished, List<int> serviceIDs)
+        {
+            bool success = true;
+            String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            try
+            {
+                sqlConnection.Open();
+                String query = "EditJob";
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 0;
+
+                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
+                cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
+                cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
+                cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
+                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
+                
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (Convert.ToInt32(reader["job_id"]).Equals(jobID) && reader["job_technician"].ToString().Equals(technician)
+                            && Convert.ToDateTime(reader["job_created"]).Equals(created) && Convert.ToInt32(reader["customer_id"]).Equals(customerID) &&
+                            (reader.IsDBNull(reader.GetOrdinal("job_finished")) || Convert.ToDateTime(reader["job_finished"]).Equals(finished)) )
+                            
                         {
                             success = true;
                             break;
@@ -93,46 +206,59 @@ namespace CIS229C_II_Project.DataAccessLayer
                 sqlConnection.Close();
                 return false;
             }
-            return success;
-        }
-        public bool EditJob(int id, int customerID, string technician, DateTime created, DateTime? finished = null)
-        {
-            bool success = true;
-            String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
-            SqlConnection sqlConnection = new SqlConnection(connString);
+
             try
             {
                 sqlConnection.Open();
-                String query = "EditJob";
+                // Delete old receipt entries
+                String query = "DeleteLinkJobService";
                 SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                // Creates receipt records to link one job with many services
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
+                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
 
-                cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = id;
-                cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
-                cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
-                cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
-                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
-                
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                sqlConnection.Close();
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+                return false;
+            }
+
+            try
+            {
+                sqlConnection.Open();
+                // Link new entries
+                String query = "LinkJobService";
+                SqlCommand cmd;
+                // Creates receipt records to link one job with many services
+                foreach (int serviceNum in serviceIDs)
                 {
-                    while (reader.Read())
+
+                    cmd = new SqlCommand(query, sqlConnection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
+                    cmd.Parameters.AddWithValue("@ServiceID", SqlDbType.Int).Value = serviceNum;
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (Convert.ToInt32(reader["job_id"]).Equals(id) && reader["job_technician"].ToString().Equals(technician)
-                            && Convert.ToDateTime(reader["job_created"]).Equals(created) && 
-                            (reader.IsDBNull(reader.GetOrdinal("job_finished")) || Convert.ToDateTime(reader["job_finished"]).Equals(finished)) )
-                            
+                        while (reader.Read())
                         {
-                            success = true;
-                            break;
-                        }
-                        else
-                        {
-                            success = false;
+                            if (Convert.ToInt32(reader["job_id"]).Equals(jobID) && serviceIDs.Contains(Convert.ToInt32(reader["service_id"])))
+                            {
+                                success = true;
+
+                            }
+                            else
+                            {
+                                success = false;
+                                break;
+                            }
                         }
                     }
+                    sqlConnection.Close();
                 }
-                sqlConnection.Close();
             }
             catch (Exception e)
             {
