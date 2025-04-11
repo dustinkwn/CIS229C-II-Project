@@ -10,33 +10,47 @@ namespace CIS229C_II_Project.Controllers
     public class ServiceController : Controller
     {
         [HttpPost]
-        public ActionResult CreateService(string serviceName, string serviceDescription, decimal servicePrice)
+        public ActionResult CreateService(string ServiceName, string ServiceDescription, decimal ServicePrice) //Names have to match the form and be case sensitive
         {
-            Models.JobDTO DTOdata = new Models.JobDTO();
-            DataAccess ServiceData = new DataAccess();
-            DTOdata = ServiceData.GetJobDTO();
-            return View(DTOdata);
+            // No model is needed since there is no "custom" fields or drop down lists
+            ServiceDataAccess serviceData = new ServiceDataAccess();
+            bool success = serviceData.CreateService(ServiceName, ServiceDescription, ServicePrice);
+
+            // Added success error output modified from your deletion
+            if (success)
+            {
+                ViewBag.Message = "Service successfully created.";
+            }
+            else
+            {
+                ViewBag.Message = "There was an error creating the service.";
+            }
+
+            return View();
         }
         [HttpGet]
         public ActionResult CreateService()
         {
-            List<Models.Service> customerServices = new List<Models.Service> ();
-            DataAccess customerServiceData = new DataAccess();
-            return View(customerServices);
+            return View();
         }
         [HttpPost]
-        public ActionResult EditService(int id)
+        public ActionResult EditService(int id) // Make sure variables match form input names
         {
-            Models.JobDTO DTOdata = new Models.JobDTO();
-            DataAccess ServiceDTOData = new DataAccess();
-            DTOdata = ServiceDTOData.GetJobDTO();
-            return View(DTOdata);
+            ServiceDataAccess serviceData = new ServiceDataAccess();
+            //bool success = serviceData.EditService(id);
+
+            // Make sure the models match each other
+            List<Models.Service> serviceList = new List<Models.Service>(); // Use Service List since this page only needs data from the service table
+            
+            serviceList = serviceData.GetServiceList();
+
+            return View(serviceList);
         }
         [HttpGet]
         public ActionResult EditService()
         {
             List<Models.Service> servicesList = new List<Models.Service>();
-            DataAccess serviceData = new DataAccess();
+            ServiceDataAccess serviceData = new ServiceDataAccess();
             return View(servicesList);
         }
         [HttpGet]
@@ -50,6 +64,7 @@ namespace CIS229C_II_Project.Controllers
         [HttpPost]
         public ActionResult DeleteService(int ServiceID)
         {
+            //
             ServiceDataAccess dataAccess = new ServiceDataAccess();
             bool success = dataAccess.DeleteService(ServiceID);
 
@@ -63,6 +78,15 @@ namespace CIS229C_II_Project.Controllers
             }
 
             List<Models.Service> serviceList = dataAccess.GetServiceList();
+            return View(serviceList);
+        }
+        [HttpGet]
+        public ActionResult ViewServiceList ()
+        {
+            // List for populating service list model for output
+            List<Models.Service> serviceList = new List<Models.Service>();
+            ServiceDataAccess serviceData = new ServiceDataAccess();
+            serviceList = serviceData.GetServiceList();
             return View(serviceList);
         }
     }

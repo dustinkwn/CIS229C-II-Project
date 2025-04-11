@@ -24,14 +24,14 @@ namespace CIS229C_II_Project.Controllers
         [HttpPost]
         public ActionResult CreateJob(int CustomerID, string JobTechnician, DateTime JobCreated, DateTime? JobFinished,List<int> ServiceList)
         {
+            // Running Create operation
+            JobDataAccess jobDataAccess = new JobDataAccess();
+            bool success = jobDataAccess.CreateJob(CustomerID, JobTechnician, JobCreated, JobFinished, ServiceList);
+
             // DTO data for populating form options
             Models.JobDTO dtoData = new Models.JobDTO();
             DataAccess dtoDataAccess = new DataAccess();
             dtoData = dtoDataAccess.GetJobDTO();
-
-            // Running Create operation
-            JobDataAccess jobDataAccess = new JobDataAccess();
-            bool success = jobDataAccess.CreateJob(CustomerID, JobTechnician, JobCreated, JobFinished, ServiceList);
 
             // *Testing the service list since it is a checkbox and haven't used this before
             /*if (ServiceList != null && ServiceList.Count > 0)
@@ -67,14 +67,14 @@ namespace CIS229C_II_Project.Controllers
         [HttpPost]
         public ActionResult EditJob(int JobID, int CustomerID, string JobTechnician, DateTime JobCreated, DateTime? JobFinished, List<int> ServiceList)
         {
+            // Running Edit operation
+            JobDataAccess jobDataAccess = new JobDataAccess();
+            bool success = jobDataAccess.EditJob(JobID, CustomerID, JobTechnician, JobCreated, JobFinished, ServiceList);
+
             // DTO populates the form with options
             Models.JobDTO dtoData = new Models.JobDTO();
             DataAccess jobDTOData = new DataAccess();
             dtoData = jobDTOData.GetJobDTO();
-
-            // Running Edit operation
-            JobDataAccess jobDataAccess = new JobDataAccess();
-            bool success = jobDataAccess.EditJob(JobID, CustomerID, JobTechnician, JobCreated, JobFinished, ServiceList);
 
             // Returns feedback to the user about if the changes worked
             if (success)
@@ -100,14 +100,16 @@ namespace CIS229C_II_Project.Controllers
         }
         public ActionResult DeleteJob(int JobID)
         {
+            // Running Delete operation before so the DTO will reflect the changes
+            JobDataAccess jobDataAccess = new JobDataAccess();
+            bool success = jobDataAccess.DeleteJob(JobID);
+
             // Populates the ddl for jobs to delete
             List<Models.Job> jobList = new List<Models.Job>();
             JobDataAccess jobData = new JobDataAccess();
             jobList = jobData.GetJobList();
 
-            // Running Delete operation
-            JobDataAccess jobDataAccess = new JobDataAccess();
-            bool success = jobDataAccess.DeleteJob(JobID);
+            
 
             // Returns feedback to the user about if the deletion worked
             if (success)

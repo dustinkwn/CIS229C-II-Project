@@ -18,7 +18,7 @@ namespace CIS229C_II_Project.Models
             {
                 finished = "Done";
             }
-            return "Status: " + finished + " Customer: " + CustomerID + " Tech:" + JobTechnician + " Start: " + JobCreated;
+            return "Status: " + finished + " Customer: " + CustomerID + " Tech: " + JobTechnician + " Start: " + JobCreated + " Finish: " + JobFinished;
         }
         public Job()
         {

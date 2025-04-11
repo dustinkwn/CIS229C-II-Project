@@ -7,6 +7,10 @@ namespace CIS229C_II_Project.Models
 {
     public class Service
     {
+        public string GetString() // temp
+        {
+            return service_name + " - " + service_price; 
+        }
         public int service_id { get; set; }
         public string service_name { get; set; }
 

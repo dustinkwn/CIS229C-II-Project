@@ -26,11 +26,15 @@
                     <td>@job.JobCreated</td>
                     <td>@job.JobFinished</td>
                     <td>@job.CustomerID</td>
-                    @if (job.Services.Count > 0 )
+                    @if (job.Services.Count > 0)
                     {
                         <td>@job.Services.ElementAt(0)</td>
                     }
-                    <td>@job.Services</td>
+                    else
+                    {
+                        <td></td>
+                    }
+
 
 
                 </tr>

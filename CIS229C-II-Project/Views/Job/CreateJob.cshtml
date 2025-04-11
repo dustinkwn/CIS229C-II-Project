@@ -36,8 +36,8 @@
             @foreach (var service in Model.ServiceList)
             {
                 <br />
-                <label for="Service Name" class="form-label"> @service.service_name </label>
-                <input type="checkbox" for="ServiceSelection" name="ServiceList" value="@service.service_id">@service.GetString()
+                <label for="Service Name" class="form-label"> @service.service_id </label>
+                <input type="checkbox" for="ServiceSelection" name="ServiceList" value="@service.service_id"> @service.GetString()
 
             }
 

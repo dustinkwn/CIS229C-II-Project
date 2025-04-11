@@ -53,10 +53,45 @@ namespace CIS229C_II_Project.DataAccessLayer
             {
                 sqlConnection.Close();
             }
+
+            try
+            {
+                sqlConnection.Open();
+                String query = "GetReceiptList";
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 0;
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // Finds correct job
+                        for (int i = 0; i < jobs.Count; i++)
+                        {
+                            if (Convert.ToInt32(reader["job_id"]) == jobs.ElementAt(i).JobID)
+                            {
+                                // Adds the service id to the object
+                                jobs.ElementAt(i).Services.Add(Convert.ToInt32(reader["service_id"]));
+                            }
+                        }
+
+                        
+                    }
+                }
+                sqlConnection.Close();
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+            }
             return jobs;
         }
         public bool CreateJob(int customerID, string technician, DateTime created,DateTime? finished, List<int> serviceIDs)
         {
+            if (serviceIDs == null) 
+            {
+                return false;
+            }
             bool success = true;
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
@@ -70,7 +105,14 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandTimeout = 0;
                 cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
                 cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
-                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
+                if (finished != null)
+                {
+                    cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@JobFinished", DBNull.Value);
+                }
                 cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -111,7 +153,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandTimeout = 0;
                     cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
-                    
+                    cmd.ExecuteNonQuery();
                     sqlConnection.Close();
             }
             catch (Exception e)
@@ -127,32 +169,36 @@ namespace CIS229C_II_Project.DataAccessLayer
                 String query = "LinkJobService";
                 SqlCommand cmd;
                 // Creates receipt records to link one job with many services
-                foreach (int serviceNum in serviceIDs)
+                if (serviceIDs != null)
                 {
-                    
-                    cmd = new SqlCommand(query, sqlConnection);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandTimeout = 0;
-                    cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
-                    cmd.Parameters.AddWithValue("@ServiceID", SqlDbType.Int).Value = serviceNum;
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    foreach (int serviceNum in serviceIDs)
                     {
-                        while (reader.Read())
+
+                        cmd = new SqlCommand(query, sqlConnection);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
+                        cmd.Parameters.AddWithValue("@ServiceID", SqlDbType.Int).Value = serviceNum;
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            if (Convert.ToInt32(reader["job_id"]).Equals(jobID) && serviceIDs.Contains( Convert.ToInt32(reader["service_id"])))
+                            while (reader.Read())
                             {
-                                success = true;
-                                
-                            }
-                            else
-                            {
-                                success = false;
-                                break;
+                                if (Convert.ToInt32(reader["job_id"]).Equals(jobID) && serviceIDs.Contains(Convert.ToInt32(reader["service_id"])))
+                                {
+                                    success = true;
+
+                                }
+                                else
+                                {
+                                    success = false;
+                                    break;
+                                }
                             }
                         }
+
                     }
-                    sqlConnection.Close();
                 }
+                sqlConnection.Close();
             }
             catch (Exception e)
             {
@@ -164,6 +210,10 @@ namespace CIS229C_II_Project.DataAccessLayer
 
         public bool EditJob(int jobID, int customerID, string technician, DateTime created, DateTime? finished, List<int> serviceIDs)
         {
+            if (serviceIDs == null)
+            {
+                return false;
+            }
             bool success = true;
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
@@ -217,7 +267,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
                 cmd.Parameters.AddWithValue("@JobID", SqlDbType.Int).Value = jobID;
-
+                cmd.ExecuteNonQuery();
                 sqlConnection.Close();
             }
             catch (Exception e)
@@ -257,8 +307,8 @@ namespace CIS229C_II_Project.DataAccessLayer
                             }
                         }
                     }
-                    sqlConnection.Close();
                 }
+                sqlConnection.Close();
             }
             catch (Exception e)
             {
