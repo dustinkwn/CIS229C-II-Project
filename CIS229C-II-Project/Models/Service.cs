@@ -13,5 +13,7 @@ namespace CIS229C_II_Project.Models
         public string service_description { get; set; }
 
         public decimal service_price { get; set; }
+
+
     }
 }

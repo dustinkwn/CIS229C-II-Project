@@ -13,7 +13,7 @@ namespace CIS229C_II_Project.DataAccessLayer
 {
     public class ServiceDataAccess
     {
-            public List<Service> GetService()
+            public List<Service> GetServiceList()
             {
                 List<Service> services = new List<Service>();
                 string connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
@@ -107,7 +107,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandTimeout = 0;
 
                 //cmd.Parameters.AddWithValue("@service_id", SqlDbType.Int).Value = serviceId;
-                cmd.Parameters.AddWithValue("@service_name", SqlDbType.VarChar).Value = serviceName;
+                cmd.Parameters.AddWithValue("@services_name", SqlDbType.VarChar).Value = serviceName;
                 cmd.Parameters.AddWithValue("@service_description", SqlDbType.VarChar).Value = serviceDescription;
                 cmd.Parameters.AddWithValue("@service_price", SqlDbType.Decimal).Value = servicePrice;
 
