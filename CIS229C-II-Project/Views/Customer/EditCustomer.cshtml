@@ -1,45 +1,44 @@
 ﻿@model List<CIS229C_II_Project.Models.Customer>
 @{
     ViewBag.Title = "Edit Customer";
-    Layout = "~/Views/Shared/_WebLayout.cshtml";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
+<div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
+    <h1 style="text-align:center"> Edit Customer </h1>
 
-<h1 style="text-align:center"> Edit Customer </h1>
+    <form method="post" action="@Url.Action("EditCustomer","Customer")">
 
-<form method="post" action="@Url.Action("EditCustomer","Customer")">
+        <div class="mb-3">
+            <label for="Old Customer Name" class="form-label"> Customer To Edit </label>
+            <select name="CustomerID" required>
+                <option value disabled selected></option>
+                @foreach (var customer in Model)
+                {
+                    <option value="@customer.ID"> @customer.FirstName @customer.LastName </option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="Customer First Name" class="form-label"> Customer First Name </label>
+            <input type="text" class="form-control" id="custName" name="CustomerFirstName" required>
+        </div>
+        <div class="mb-3">
+            <label for="Customer Last Name" class="form-label"> Customer Last Name </label>
+            <input type="text" class="form-control" id="custName" name="CustomerLastName" required>
+        </div>
+        <div class="mb-3">
+            <label for="Customer Email" class="form-label"> Customer Email </label>
+            <input type="email" class="form-control" id="custInfo" name="CustomerEmail" required>
+        </div>
+        <div class="mb-3">
+            <label for="Customer Phone" class="form-label"> Customer Phone Number </label>
+            <input type="tel" class="form-control" id="custInfo" name="CustomerPhone" required>
+        </div>
 
-    <div class="mb-3">
-        <label for="Old Customer Name" class="form-label"> Customer To Edit </label>
-        <select name="CustomerID" required>
-            <option value disabled selected></option>
-            @foreach (var customer in Model)
-            {
-                <option value="@customer.ID"> @customer.FirstName @customer.LastName </option>
-            }
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="Customer First Name" class="form-label"> Customer First Name </label>
-        <input type="text" class="form-control" id="custName" name="CustomerFirstName" required>
-    </div>
-    <div class="mb-3">
-        <label for="Customer Last Name" class="form-label"> Customer Last Name </label>
-        <input type="text" class="form-control" id="custName" name="CustomerLastName" required>
-    </div>
-    <div class="mb-3">
-        <label for="Customer Email" class="form-label"> Customer Email </label>
-        <input type="email" class="form-control" id="custInfo" name="CustomerEmail" required>
-    </div>
-    <div class="mb-3">
-        <label for="Customer Phone" class="form-label"> Customer Phone Number </label>
-        <input type="tel" class="form-control" id="custInfo" name="CustomerPhone" required>
-    </div>
+        <div>
+            <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
+        </div>
 
-    <div>
-        <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
-    </div>
-
-    <div>@ViewBag.Message</div>
-</form>
-
-
+        <div>@ViewBag.Message</div>
+    </form>
+</div>

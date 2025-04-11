@@ -37,7 +37,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                                         service_id = Convert.ToInt32(reader["service_id"]),
                                         service_name = reader["service_name"].ToString(),
                                         service_description = reader["service_description"].ToString(),
-                                        service_price = Convert.ToDecimal(reader["service_price"]),
+                                        service_price = Convert.ToDecimal(reader["service_cost"]),
                                     };
 
                                     services.Add(serv);
@@ -53,7 +53,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 return services;
             }
 
-            public bool CreateService(int serviceId, string serviceName, string serviceDescription, decimal servicePrice)
+            public bool CreateService(string serviceName, string serviceDescription, decimal servicePrice)
             {
                 bool success = true;
                 String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
@@ -66,14 +66,15 @@ namespace CIS229C_II_Project.DataAccessLayer
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandTimeout = 0;
                     //cmd.Parameters.AddWithValue("@service_id", serviceId);
-                    cmd.Parameters.AddWithValue("@services_name", serviceName);
+                    cmd.Parameters.AddWithValue("@service_name", serviceName);
                     cmd.Parameters.AddWithValue("@service_description", serviceDescription);
                     cmd.Parameters.AddWithValue("@service_price", servicePrice);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            if (Convert.ToInt32(reader["service_id"]).Equals(serviceId))
+                            if (Convert.ToDecimal(reader["service_cost"]).Equals(servicePrice) && reader["service_name"].ToString().Equals(serviceName)
+                            && reader["service_description"].ToString().Equals(serviceDescription))
                             {
                                 success = true;
                                 break;
@@ -107,7 +108,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandTimeout = 0;
 
                 //cmd.Parameters.AddWithValue("@service_id", SqlDbType.Int).Value = serviceId;
-                cmd.Parameters.AddWithValue("@services_name", SqlDbType.VarChar).Value = serviceName;
+                cmd.Parameters.AddWithValue("@service_name", SqlDbType.VarChar).Value = serviceName;
                 cmd.Parameters.AddWithValue("@service_description", SqlDbType.VarChar).Value = serviceDescription;
                 cmd.Parameters.AddWithValue("@service_price", SqlDbType.Decimal).Value = servicePrice;
 

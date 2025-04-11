@@ -1,51 +1,51 @@
 ﻿@model CIS229C_II_Project.Models.JobDTO
 @{
     ViewBag.Title = "Create Job";
-    Layout = "~/Views/Shared/_WebLayout.cshtml";
+    Layout = "~/Views/Shared/_JobLayout.cshtml";
 }
+<div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
+    <h1 style="text-align:center"> Create Job </h1>
 
-<h1 style="text-align:center"> Create Job </h1>
+    <form method="post" action="@Url.Action("CreateJob","Job")">
+        <div class="mb-3">
+            <label for="Customer Name" class="form-label"> Customer Name </label>
+            <select name="CustomerID" required>
+                <option value disabled selected></option>
+                @foreach (var customer in Model.CustomerList)
+                {
+                    <option value="@customer.ID"> @customer.GetString() </option>
+                }
+            </select>
+        </div>
 
-<form method="post" action="@Url.Action("CreateJob","Job")">
-    <div class="mb-3">
-        <label for="Customer Name" class="form-label"> Customer Name </label>
-        <select name="CustomerID" required>
-            <option value disabled selected></option>
-            @foreach (var customer in Model.CustomerList)
+        <div class="mb-3">
+            <label for="Job Technician Name" class="form-label"> Technician Name </label>
+            <input type="text" class="form-control" id="jobInfo" name="JobTechnician" required>
+        </div>
+        <div class="mb-3">
+            <label for="Job start time" class="form-label"> Start Date and Time </label>
+            <input type="datetime-local" class="form-control" id="jobInfo" name="JobCreated" required>
+        </div>
+        <div class="mb-3">
+            <label for="Job End time" class="form-label"> End Date and Time </label>
+            <input type="datetime-local" class="form-control" id="jobInfo" name="JobFinished">
+        </div>
+
+        <div class="mb-3">
+            <label for="Service List" class="form-label"> Service Selection </label>
+            @foreach (var service in Model.ServiceList)
             {
-                <option value="@customer.ID"> @customer.FirstName @customer.LastName </option>
+                <br />
+                <label for="Service Name" class="form-label"> @service.service_id </label>
+                <input type="checkbox" for="ServiceSelection" name="ServiceList" value="@service.service_id"> @service.GetString()
+
             }
-        </select>
-    </div>
 
-    <div class="mb-3">
-        <label for="Job Technician Name" class="form-label"> Technician Name </label>
-        <input type="text" class="form-control" id="jobInfo" name="JobTechnician" required>
-    </div>
-    <div class="mb-3">
-        <label for="Job start time" class="form-label"> Start Date and Time </label>
-        <input type="datetime-local" class="form-control" id="jobInfo" name="JobCreated" required>
-    </div>
-    <div class="mb-3">
-        <label for="Job End time" class="form-label"> End Date and Time </label>
-        <input type="datetime-local" class="form-control" id="jobInfo" name="JobFinished">
-    </div>
+        </div>
+        <div style="text-align:center">
+            <button type="submit" class="btn btn-primary" style="width:75%"> Submit </button>
+        </div>
+        <div>@ViewBag.Message</div>
 
-    <div class="mb-3">
-        <label for="Service List" class="form-label"> Service Selection </label>
-        @foreach (var customer in Model.CustomerList)
-        {
-            <br />
-            <label for="Customer Name" class="form-label"> @customer.ID </label>
-            <input type="checkbox" for="ServiceSelection" name="ServiceList" value="@customer.ID">@customer.FirstName @customer.LastName
-
-        }
-
-    </div>
-    <div style="text-align:center">
-        <button type="submit" class="btn btn-primary" style="width:75%"> Submit </button>
-    </div>
-    <div>@ViewBag.Message</div>
-
-</form>
-
+    </form>
+</div>

@@ -10,7 +10,7 @@ namespace CIS229C_II_Project.Models
         public string GetString()
         {
             string finished = "";
-            if (Finished == null)
+            if (JobFinished == null)
             {
                 finished = "Incomplete";
             }
@@ -18,22 +18,22 @@ namespace CIS229C_II_Project.Models
             {
                 finished = "Done";
             }
-            return "Status: " + finished + " Customer: " + CustomerID + " Tech:" + Technician + " Start: " + Created;
+            return "Status: " + finished + " Customer: " + CustomerID + " Tech: " + JobTechnician + " Start: " + JobCreated + " Finish: " + JobFinished;
         }
         public Job()
         {
-            ID = -1;
-            Technician = "";
-            Created = new DateTime();
-            Finished = null;
+            JobID = -1;
             CustomerID = -1;
-            ServiceList = new List<Service>();
+            JobTechnician = "";
+            JobCreated = DateTime.Now;
+            JobFinished = null;
+            Services = new List<int>();
         }
-        public int ID { get; set; }
-        public string Technician { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime? Finished { get; set; }
+        public int JobID { get; set; }
         public int CustomerID { get; set; }
-        public List<Service> ServiceList { get; set; }
+        public string JobTechnician { get; set; }
+        public DateTime JobCreated { get; set; }
+        public DateTime? JobFinished { get; set; }
+        public List<int> Services { get; set; }
     }
 }

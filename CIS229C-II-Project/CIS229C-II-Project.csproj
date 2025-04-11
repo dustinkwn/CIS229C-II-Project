@@ -133,6 +133,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\JobDTO.cs" />
     <Compile Include="Models\Outputable.cs" />
@@ -190,7 +191,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_WebLayout.cshtml" />
     <Content Include="Views\Dashboard\Dashboard.cshtml" />
     <Content Include="Views\Customer\CreateCustomer.cshtml" />
     <Content Include="Views\Customer\EditCustomer.cshtml" />
@@ -200,6 +200,13 @@
     <Content Include="Views\Job\DeleteJob.cshtml" />
     <Content Include="Views\Service\CreateService.cshtml" />
     <Content Include="Views\Service\EditService.cshtml" />
+    <Content Include="Views\Service\DeleteView.cshtml" />
+    <Content Include="Views\Shared\_CustomerLayout.cshtml" />
+    <Content Include="Views\Shared\_JobLayout.cshtml" />
+    <Content Include="Views\Shared\_ServiceLayout.cshtml" />
+    <Content Include="Views\Customer\ViewCustomerList.cshtml" />
+    <Content Include="Views\Job\ViewJobList.cshtml" />
+    <Content Include="Views\Service\ViewServiceList.cshtml" />
     <Content Include="Views\Service\DeleteService.cshtml" />
   </ItemGroup>
   <ItemGroup>
