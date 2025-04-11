@@ -3,23 +3,24 @@
     ViewBag.Title = "Delete Job";
     Layout = "~/Views/Shared/_JobLayout.cshtml";
 }
+<div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
+    <h1 style="text-align:center"> Delete Job </h1>
 
-<h1 style="text-align:center"> Delete Job </h1>
+    <form method="post" action="@Url.Action("EditJob","Job")">
+        <div class="mb-3">
+            <label for="Old Job Name" class="form-label"> Job To Delete </label>
+            <select name="JobID" required>
+                <option value disabled selected></option>
+                @foreach (var job in Model)
+                {
+                    <option value="@job.JobID"> @job.GetString() </option>
+                }
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
+        </div>
+        <div>@ViewBag.Message</div>
 
-<form method="post" action="@Url.Action("EditJob","Job")">
-    <div class="mb-3">
-        <label for="Old Job Name" class="form-label"> Job To Delete </label>
-        <select name="JobID" required>
-            <option value disabled selected></option>
-            @foreach (var job in Model)
-            {
-                <option value="@job.JobID"> @job.GetString() </option>
-            }
-        </select>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
-    </div>
-    <div>@ViewBag.Message</div>
-
-</form>
+    </form>
+</div>

@@ -4,36 +4,38 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!-- This file is to display the data from the model in table format-->
-<h2>@ViewBag.message</h2>
-
-<table class="table">
-    <tr>
-        <th>Job ID</th>
-        <th>Job Technician</th>
-        <th>Job Create Date</th>
-        <th>Job Finish Date</th>
-        <th>Customer Name</th>
-    </tr>
-    @if (Model.JobList.Count > 0)
-    {
-        foreach (var job in Model.JobList)
+<h2>Job Dashboard</h2>
+<div>
+    <table class="table">
+        <tr>
+            <th>Job ID</th>
+            <th>Job Technician</th>
+            <th>Job Create Date</th>
+            <th>Job Finish Date</th>
+            <th>Customer Name</th>
+        </tr>
+        @if (Model.JobList.Count > 0)
         {
-            <tr>
-                <td>@job.JobID</td>
-                <td>@job.JobTechnician</td>
-                <td>@job.JobCreated</td>
-                <td>@job.JobFinished</td>
-                <td>@Model.GetCustomerByID(job.CustomerID).FirstName @Model.GetCustomerByID(job.CustomerID).LastName</td>
-                @if (Model.ServiceList.Count > 0)
-                {
-                    //job.Services.ElementAt(0);
-                }
-            </tr>
+            foreach (var job in Model.JobList)
+            {
+                <tr>
+                    <td>@job.JobID</td>
+                    <td>@job.JobTechnician</td>
+                    <td>@job.JobCreated</td>
+                    <td>@job.JobFinished</td>
+                    <td>@Model.GetCustomerByID(job.CustomerID).FirstName @Model.GetCustomerByID(job.CustomerID).LastName</td>
+                    @if (Model.ServiceList.Count > 0)
+                    {
+                        //job.Services.ElementAt(0);
+                    }
+                </tr>
+            }
         }
-    }
-    else
-    {
-        ViewBag.Message = "No Jobs to Display";
-    }
+        else
+        {
+            ViewBag.Message = "No Jobs to Display";
+        }
 
-</table>
+    </table>
+    @ViewBag.Message
+</div>

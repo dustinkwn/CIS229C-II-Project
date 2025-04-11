@@ -20,7 +20,7 @@ namespace CIS229C_II_Project.DataAccessLayer
 
             JobDTO dtoData = new JobDTO ();
             dtoData.CustomerList = customerData.GetCustomerList ();
-            //dtoData.ServiceList = serviceData.GetServiceList();
+            dtoData.ServiceList = serviceData.GetService();
             dtoData.JobList = jobDataAccess.GetJobList ();
             return dtoData;
 

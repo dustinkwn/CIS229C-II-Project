@@ -204,6 +204,9 @@
     <Content Include="Views\Shared\_CustomerLayout.cshtml" />
     <Content Include="Views\Shared\_JobLayout.cshtml" />
     <Content Include="Views\Shared\_ServiceLayout.cshtml" />
+    <Content Include="Views\Customer\ViewCustomerList.cshtml" />
+    <Content Include="Views\Job\ViewJobList.cshtml" />
+    <Content Include="Views\Service\ViewServiceList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

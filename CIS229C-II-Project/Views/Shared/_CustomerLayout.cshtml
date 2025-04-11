@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    
 }
 <!DOCTYPE html>
 <html>
@@ -22,18 +23,18 @@
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Dashboard", "Dashboard", "Dashboard", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink(" Job ", "CreateJob", "Job", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Service", "CreateService", "Service", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Customer", "CreateCustomer", "Customer", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink(" Job ", "ViewJobList", "Job", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Service", "ViewServiceList", "Service", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Customer", "ViewCustomerList", "Customer", new { area = "" }, new { @class = "nav-link" })</li>
 
                 </ul>
             </div>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Dashboard", "Dashboard", "Dashboard", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink(" Job ", "CreateJob", "Job", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Service", "CreateService", "Service", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Customer", "CreateCustomer", "Customer", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("View Customers", "ViewCustomerList", "Customer", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Create Customer", "CreateCustomer", "Customer", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Edit Customer", "EditCustomer", "Customer", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Delete Customer", "DeleteCustomer", "Customer", new { area = "" }, new { @class = "nav-link" })</li>
 
                 </ul>
             </div>
@@ -41,9 +42,7 @@
     </nav>
     <div class="container body-content">
         <div style="text-align: left;">
-            <div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
-                @RenderBody()
-            </div>
+            @RenderBody()            
         </div>
         <hr />
         <footer>
