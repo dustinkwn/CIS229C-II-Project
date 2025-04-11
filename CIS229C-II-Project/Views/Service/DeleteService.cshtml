@@ -1,0 +1,27 @@
+﻿@model List<CIS229C_II_Project.Models.Service>
+@{
+    ViewBag.Title = "Delete Service";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<h1 style="text-align:center"> Delete Service </h1>
+
+<form method="post" action="@Url.Action("DeleteService","Service")">
+    <div class="mb-3">
+        <label for="ServiceID" class="form-label"> Service To Delete </label>
+        <select name="ServiceID" required>
+            <option value disabled selected></option>
+            @foreach (var service in Model)
+            {
+                <option value="@service.service_id">
+                    @service.service_name - @service.service_price
+                </option>
+            }
+        </select>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
+    </div>
+    <div>@ViewBag.Message</div>
+
+</form>

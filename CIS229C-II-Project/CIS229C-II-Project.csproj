@@ -207,6 +207,7 @@
     <Content Include="Views\Customer\ViewCustomerList.cshtml" />
     <Content Include="Views\Job\ViewJobList.cshtml" />
     <Content Include="Views\Service\ViewServiceList.cshtml" />
+    <Content Include="Views\Service\DeleteService.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

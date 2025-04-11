@@ -12,19 +12,18 @@ namespace CIS229C_II_Project.DataAccessLayer
 {
     public class DataAccess
     {
-        public JobDTO GetJobDTO ()
+        public JobDTO GetJobDTO()
         {
-            CustomerDataAccess customerData = new CustomerDataAccess ();
-            ServiceDataAccess serviceData = new ServiceDataAccess ();
-            JobDataAccess jobDataAccess = new JobDataAccess ();
+            CustomerDataAccess customerData = new CustomerDataAccess();
+            ServiceDataAccess serviceData = new ServiceDataAccess();
+            JobDataAccess jobDataAccess = new JobDataAccess();
 
-            JobDTO dtoData = new JobDTO ();
-            dtoData.CustomerList = customerData.GetCustomerList ();
-            dtoData.ServiceList = serviceData.GetService();
-            dtoData.JobList = jobDataAccess.GetJobList ();
+            JobDTO dtoData = new JobDTO();
+            dtoData.CustomerList = customerData.GetCustomerList();
+            dtoData.ServiceList = serviceData.GetServiceList();
+            dtoData.JobList = jobDataAccess.GetJobList();
             return dtoData;
 
         }
-       
     }
 }
