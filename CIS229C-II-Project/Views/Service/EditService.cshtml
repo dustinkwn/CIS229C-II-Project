@@ -1,12 +1,40 @@
 ﻿@model List<CIS229C_II_Project.Models.Service>
-
 @{
-    // Viewbag.Title will go in the tab text in the browser
     ViewBag.Title = "Edit Service";
-    // I created a new layout for Service layout with a service navigation section
-    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
+<div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
+    <h1 style="text-align:center"> Edit Service </h1>
 
-<h2>Edit Service</h2>
+    <form method="post" action="@Url.Action("EditService","Service")">
 
+        <div class="mb-3">
+            <label for="ServiceID" class="form-label"> Service To Edit </label>
+            <select name="ServiceID" required>
+                <option value disabled selected></option>
+                @foreach (var service in Model)
+                {
+                    <option value="@service.service_id"> @service.service_id @service.service_name @service.service_price </option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="ServiceID" class="form-label"> Service ID </label>
+            <input type="number" class="form-control" id="serviceID" name="ServiceID" required>
+        </div>
+        <div class="mb-3">
+            <label for="Service Name" class="form-label"> Service Name </label>
+            <input type="text" class="form-control" id="ServiceName" name="ServiceName" required>
+        </div>
+        <div class="mb-3">
+            <label for="Service Price" class="form-label"> Service Price </label>
+            <input type="number" class="form-control" id="ServicePrice" name="ServicePrice" required>
+        </div>
 
+        <div>
+            <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
+        </div>
+
+        <div>@ViewBag.Message</div>
+    </form>
+</div>
