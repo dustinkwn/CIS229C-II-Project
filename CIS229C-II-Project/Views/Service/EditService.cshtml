@@ -18,10 +18,7 @@
                 }
             </select>
         </div>
-        <div class="mb-3">
-            <label for="ServiceID" class="form-label"> Service ID </label>
-            <input type="number" class="form-control" id="serviceID" name="ServiceID" required>
-        </div>
+        @Html.Hidden("ServiceID")
         <div class="mb-3">
             <label for="Service Name" class="form-label"> Service Name </label>
             <input type="text" class="form-control" id="ServiceName" name="ServiceName" required>
