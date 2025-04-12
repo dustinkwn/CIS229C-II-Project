@@ -12,15 +12,31 @@ namespace CIS229C_II_Project.DataAccessLayer
 {
     public class DataAccess
     {
-        public List<JobDTO> GetJobDTOList ()
+        public JobDTO GetJobDTO()
         {
-            List<JobDTO> jobDTOList = new List<JobDTO>();
+            CustomerDataAccess customerData = new CustomerDataAccess();
+            ServiceDataAccess serviceData = new ServiceDataAccess();
+            JobDataAccess jobDataAccess = new JobDataAccess();
+
+            JobDTO dtoData = new JobDTO();
+            dtoData.CustomerList = customerData.GetCustomerList();
+            dtoData.ServiceList = serviceData.GetServiceList();
+            dtoData.JobList = jobDataAccess.GetJobList();
+            return dtoData;
+
+        }
+        public List<Models.DashboardModel> GetDashboardModels()
+        {
+            
+            List<Models.DashboardModel> dashboardRecords = new List<Models.DashboardModel>();
+
+            // database object access
             String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
             SqlConnection sqlConnection = new SqlConnection(connString);
             try
             {
                 sqlConnection.Open();
-                string query = "GetJobDTOList";
+                String query = "GetDashboardModel";
                 SqlCommand cmd = new SqlCommand(query, sqlConnection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
@@ -28,42 +44,42 @@ namespace CIS229C_II_Project.DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        JobDTO job = new JobDTO();
-                        job.JobID = Convert.ToInt32(reader["job_id"]);
-                        job.CustomerID = Convert.ToInt32(reader["customer_id"]);
-                        job.CustomerFirstName = reader["customer_fname"].ToString();
-                        job.CustomerLastName = reader["customer_lname"].ToString();
-                        job.CustomerPhone = reader["customer_phone"].ToString();
-                        job.CustomerEmail = reader["customer_email"].ToString();                        
-                        job.TechnicianName = reader["customer_technician"].ToString();
-                        job.JobCreated = Convert.ToDateTime(reader["job_created"]);
+                        DashboardModel tempModel = new DashboardModel();
 
+                        tempModel.JobID = Convert.ToInt32(reader["job_id"]);
+                        tempModel.JobTechnician = reader["job_technician"].ToString();
+                        tempModel.JobCreated = Convert.ToDateTime(reader["job_created"]);
                         if (reader.IsDBNull(reader.GetOrdinal("job_finished")))
                         {
-                            job.JobFinished= null;
+                            tempModel.JobFinished = null;
                         }
                         else
                         {
-                            job.JobFinished = Convert.ToDateTime(reader["job_finished"]);
+                            tempModel.JobFinished = Convert.ToDateTime(reader["job_finished"]);
                         }
 
-                        job.ServiceID = Convert.ToInt32(reader["service_id"]);
-                        job.ServiceName = reader["service_name"].ToString();
-                        job.ServiceDescription = reader["service_description"].ToString();
-                        job.ServiceCost = Convert.ToDouble(reader["service_cost"]);
+                        tempModel.CustomerID = Convert.ToInt32(reader["customer_id"]);
+                        tempModel.CustomerFirstName = reader["customer_fname"].ToString();
+                        tempModel.CustomerLastName = reader["customer_lname"].ToString();
+                        tempModel.CustomerEmail = reader["customer_email"].ToString();
+                        tempModel.CustomerPhone = reader["customer_phone"].ToString();
 
-                        jobDTOList.Add(job);
+                        tempModel.ServiceID = Convert.ToInt32(reader["service_id"]);
+                        tempModel.ServiceName = reader["service_name"].ToString();
+                        tempModel.ServiceDescription = reader["service_description"].ToString();
+                        tempModel.ServiceCost = Convert.ToDecimal(reader["service_cost"]);
+
+                        dashboardRecords.Add(tempModel);
                     }
                 }
                 sqlConnection.Close();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 sqlConnection.Close();
             }
-            
-            return jobDTOList;
-                
+
+            return dashboardRecords;
         }
     }
 }

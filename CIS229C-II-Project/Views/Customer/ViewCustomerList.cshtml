@@ -1,0 +1,38 @@
+﻿@model List<CIS229C_II_Project.Models.Customer>
+@{
+    ViewBag.Title = "View Customer List";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<h2>Customer Viewer</h2>
+
+<div>
+    <table class="table">
+        <tr>
+            <th>Customer ID</th>
+            <th>Customer First Name</th>
+            <th>Customer Last Name</th>
+            <th>Customer Email</th>
+            <th>Customer Phone</th>
+        </tr>
+        @if (Model.Count > 0)
+        {
+            foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@customer.ID</td>
+                    <td>@customer.FirstName</td>
+                    <td>@customer.LastName</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.Phone</td>
+                </tr>
+            }
+        }
+        else
+        {
+            ViewBag.Message = "No Customers to Display";
+        }
+
+    </table>
+    @ViewBag.Message
+</div>

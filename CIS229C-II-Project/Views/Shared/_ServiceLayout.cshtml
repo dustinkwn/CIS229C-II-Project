@@ -1,7 +1,4 @@
-﻿@{
-    Layout = null;
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -28,10 +25,21 @@
 
                 </ul>
             </div>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("View Services", "ViewServiceList", "Service", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Create Service", "CreateService", "Service", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Edit Service", "EditService", "Service", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Delete Service", "DeleteService", "Service", new { area = "" }, new { @class = "nav-link" })</li>
+
+                </ul>
+            </div>
         </div>
     </nav>
     <div class="container body-content">
-        @RenderBody()
+        <div style="text-align: left;">
+            @RenderBody()
+        </div>
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>

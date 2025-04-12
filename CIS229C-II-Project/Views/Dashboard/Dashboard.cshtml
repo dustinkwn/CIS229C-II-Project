@@ -1,21 +1,94 @@
-﻿@model List<CIS229C_II_Project.Models.JobDTO>
+﻿@model List<CIS229C_II_Project.Models.DashboardModel>
 @{
     ViewBag.Title = "Dashboard";
-    Layout = "~/Views/Shared/_WebLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!-- This file is to display the data from the model in table format-->
-<h2>@ViewBag.message</h2>
-
-<table class="table">
-    <tr>
-        <th>Job Number</th>
-        <th>Customer</th>
-    </tr>
-    @foreach (var job in Model)
-    {
+<h2>Job Dashboard</h2>
+<div>
+    <table class="table">
         <tr>
-            <td>@job.JobCompleted.ToString()</td>
-            <td>@job.JobCompleted.ToString()</td>
+            <th>Job ID</th>
+            <th>Job Technician</th>
+            <th>Job Create Time</th>
+            <th>Job Finish Time</th>
+            <th>Cust ID</th>
+            <th>Cust Name</th>
+            <th>Contact Info</th>
+            <th>Serv ID</th>
+            <th>Serv Name</th>
+            <th>Serv Description</th>
+            <th>Serv Cost</th>
+
+
         </tr>
-    }
-</table>
+        @if (Model.Count > 0)
+        {
+            CIS229C_II_Project.Models.DashboardModel oldJob = null;
+            foreach (var job in Model)
+            {
+                if (oldJob != null && oldJob.JobID == job.JobID)
+                {
+                    <tr>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>@job.ServiceID</td>
+                        <td>@job.ServiceName</td>
+                        <td>@job.ServiceDescription</td>
+                        <td>@job.ServiceCost</td>
+
+                    </tr>
+                }
+                else
+                {
+                    if (oldJob != null && oldJob.JobID != job.JobID)
+                    {
+                        <tr>
+
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                    }
+                    <tr>
+
+                        <td>@job.JobID</td>
+                        <td>@job.JobTechnician</td>
+                        <td>@job.JobCreated</td>
+                        <td>@job.JobFinished</td>
+                        <td>@job.CustomerID</td>
+                        <td>@job.CustomerFirstName @job.CustomerLastName</td>
+                        <td>@job.CustomerEmail @job.CustomerPhone</td>
+                        <td>@job.ServiceID</td>
+                        <td>@job.ServiceName</td>
+                        <td>@job.ServiceDescription</td>
+                        <td>@job.ServiceCost</td>
+
+                    </tr>
+                }
+                oldJob = job;
+            }
+        }
+        else
+        {
+            ViewBag.Message = "No Jobs to Display";
+        }
+
+    </table>
+    @ViewBag.Message
+</div>

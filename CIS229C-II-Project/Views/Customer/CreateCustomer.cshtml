@@ -1,38 +1,36 @@
 ﻿
 @{
     ViewBag.Title = "Create Customer";
-    Layout = "~/Views/Shared/_WebLayout.cshtml";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
+<div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
+    <h1 style="text-align:center"> Create Customer </h1>
 
-<div style="position: fixed; left: 0px; right: 0px; bottom: 0px; top: 0px; margin: auto; border: 1px solid; Width: 400px; height: 500px">
-    <div style="position: absolute; left: 0px; right: 0px; bottom: 0px; top: 0px; margin: auto;  Width: 350px; height: 450px">
+    <form method="post" action="@Url.Action("CreateCustomer","Customer")">
 
-        <h1 style="text-align:center"> Create Customer </h1>
+        <div class="mb-3">
+            <label for="Customer First Name" class="form-label"> Customer First Name </label>
+            <input type="text" class="form-control" id="custName" name="CustomerFirstName" required>
+        </div>
+        <div class="mb-3">
+            <label for="Customer Last Name" class="form-label"> Customer Last Name </label>
+            <input type="text" class="form-control" id="custName" name="CustomerLastName" required>
+        </div>
+        <div class="mb-3">
+            <label for="Customer Email" class="form-label"> Customer Email </label>
+            <input type="email" class="form-control" id="custInfo" name="CustomerEmail" required>
+        </div>
+        <div class="mb-3">
+            <label for="Customer Phone" class="form-label"> Customer Phone Number </label>
+            <input type="text" class="form-control" id="custInfo" name="CustomerPhone" required>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
+        </div>
 
-        <form method="post" action="@Url.Action("CreateCustomer","Customer")">
-
-            <div class="mb-3">
-                <label for="Customer First Name" class="form-label"> Customer First Name </label>
-                <input type="text" class="form-control" id="custName" name="CustomerFirstName" required>
-            </div>
-            <div class="mb-3">
-                <label for="Customer Last Name" class="form-label"> Customer Last Name </label>
-                <input type="text" class="form-control" id="custName" name="CustomerLastName" required>
-            </div>
-            <div class="mb-3">
-                <label for="Customer Email" class="form-label"> Customer Email </label>
-                <input type="email" class="form-control" id="custInfo" name="CustomerEmail" required>
-            </div>
-            <div class="mb-3">
-                <label for="Customer Phone" class="form-label"> Customer Phone Number </label>
-                <input type="text" class="form-control" id="custInfo" name="CustomerPhone" required>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary" style="width:100%"> Submit </button>
-            </div>
-
-            <div>@ViewBag.Message</div>
-        </form>
-    </div>
+        <div>@ViewBag.Message</div>
+    </form>
 </div>
+
+
 
