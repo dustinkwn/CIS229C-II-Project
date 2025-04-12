@@ -1,7 +1,7 @@
 ﻿@model List<CIS229C_II_Project.Models.Service>
 @{
     ViewBag.Title = "Edit Service";
-    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
 }
 <div style="width: 500px; margin: 0 auto; border: 1px solid; margin: auto; padding: 15px">
     <h1 style="text-align:center"> Edit Service </h1>
@@ -14,7 +14,7 @@
                 <option value disabled selected></option>
                 @foreach (var service in Model)
                 {
-                    <option value="@service.service_id"> @service.service_id @service.service_name @service.service_price </option>
+                    <option value="@service.service_id"> @service.service_name </option>
                 }
             </select>
         </div>
@@ -27,8 +27,12 @@
             <input type="text" class="form-control" id="ServiceName" name="ServiceName" required>
         </div>
         <div class="mb-3">
+            <label for="Service Description" class="form-label"> Service Description </label>
+            <input type="text" class="form-control" id="ServiceDescription" name="ServiceDescription" required>
+        </div>
+        <div class="mb-3">
             <label for="Service Price" class="form-label"> Service Price </label>
-            <input type="number" class="form-control" id="ServicePrice" name="ServicePrice" required>
+            <input type="number" step=".01" class="form-control" id="ServicePrice" name="ServicePrice" required>
         </div>
 
         <div>

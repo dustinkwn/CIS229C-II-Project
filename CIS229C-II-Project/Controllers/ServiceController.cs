@@ -34,23 +34,19 @@ namespace CIS229C_II_Project.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult EditService(int id) // Make sure variables match form input names
+        public ActionResult EditService(int ServiceID, string ServiceName, string ServiceDescription, decimal ServicePrice)
         {
             ServiceDataAccess serviceData = new ServiceDataAccess();
-            //bool success = serviceData.EditService(id);
-
-            // Make sure the models match each other
-            List<Models.Service> serviceList = new List<Models.Service>(); // Use Service List since this page only needs data from the service table
-            
-            serviceList = serviceData.GetServiceList();
-
-            return View(serviceList);
+            bool success = serviceData.EditService(ServiceID, ServiceName, ServiceDescription, ServicePrice);
+            List<Models.Service> servicesList = serviceData.GetServiceList();
+            return View(servicesList);
         }
         [HttpGet]
         public ActionResult EditService()
         {
-            List<Models.Service> servicesList = new List<Models.Service>();
             ServiceDataAccess serviceData = new ServiceDataAccess();
+            List<Models.Service> servicesList = serviceData.GetServiceList();
+
             return View(servicesList);
         }
         [HttpGet]
