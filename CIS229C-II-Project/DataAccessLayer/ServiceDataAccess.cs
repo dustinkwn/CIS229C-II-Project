@@ -107,7 +107,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandTimeout = 0;
 
-                //cmd.Parameters.AddWithValue("@service_id", SqlDbType.Int).Value = serviceId;
+                cmd.Parameters.AddWithValue("@service_id", SqlDbType.Int).Value = serviceId;
                 cmd.Parameters.AddWithValue("@service_name", SqlDbType.VarChar).Value = serviceName;
                 cmd.Parameters.AddWithValue("@service_description", SqlDbType.VarChar).Value = serviceDescription;
                 cmd.Parameters.AddWithValue("@service_price", SqlDbType.Decimal).Value = servicePrice;
