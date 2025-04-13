@@ -117,7 +117,7 @@ namespace CIS229C_II_Project.DataAccessLayer
                     while (reader.Read())
                     {
                         if (Convert.ToInt32(reader["service_id"]).Equals(serviceId) && reader["service_name"].ToString().Equals(serviceName)
-                            && reader["service_description"].ToString().Equals(serviceDescription) && Convert.ToDecimal(reader["service_price"]).Equals(servicePrice))
+                            && reader["service_description"].ToString().Equals(serviceDescription) && Convert.ToDecimal(reader["service_cost"]).Equals(servicePrice))
 
                         {
                             success = true;
