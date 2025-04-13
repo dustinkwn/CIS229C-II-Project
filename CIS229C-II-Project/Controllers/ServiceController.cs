@@ -45,7 +45,7 @@ namespace CIS229C_II_Project.Controllers
             }
             else
             {
-                ViewBag.Message = "Error creating service";
+                ViewBag.Message = "Error editing service";
             }
             return View(servicesList);
         }
