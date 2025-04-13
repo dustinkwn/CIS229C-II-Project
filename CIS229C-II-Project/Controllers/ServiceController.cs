@@ -41,7 +41,7 @@ namespace CIS229C_II_Project.Controllers
             List<Models.Service> servicesList = serviceData.GetServiceList();
             if (success)
             {
-                ViewBag.Message = "Service successfully created.";
+                ViewBag.Message = "Edit successful.";
             }
             else
             {
@@ -77,7 +77,7 @@ namespace CIS229C_II_Project.Controllers
             }
             else
             {
-                ViewBag.Message = "There was an error deleting the service.";
+                ViewBag.Message = "Error: Cannot delete service";
             }
 
             List<Models.Service> serviceList = dataAccess.GetServiceList();

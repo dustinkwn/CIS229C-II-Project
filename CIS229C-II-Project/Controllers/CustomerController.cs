@@ -91,7 +91,7 @@ namespace CIS229C_II_Project.Controllers
             }
             else
             {
-                ViewBag.Message = "Customer Delete Failed";
+                ViewBag.Message = "Customer Delete Failed (Cannot be deleted if in job).";
             }
             return View(customerList);
         }
