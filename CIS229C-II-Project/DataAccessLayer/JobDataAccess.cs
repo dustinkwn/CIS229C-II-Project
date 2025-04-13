@@ -229,8 +229,15 @@ namespace CIS229C_II_Project.DataAccessLayer
                 cmd.Parameters.AddWithValue("@CustomerID", SqlDbType.Int).Value = customerID;
                 cmd.Parameters.AddWithValue("@JobTechnician", SqlDbType.VarChar).Value = technician;
                 cmd.Parameters.AddWithValue("@JobCreated", SqlDbType.DateTime).Value = created;
-                cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
-                
+                if (finished != null)
+                {
+                    cmd.Parameters.AddWithValue("@JobFinished", SqlDbType.DateTime).Value = finished;
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@JobFinished", DBNull.Value);
+                }
+
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
