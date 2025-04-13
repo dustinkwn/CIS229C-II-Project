@@ -14,7 +14,7 @@
                 <option value disabled selected></option>
                 @foreach (var customer in Model)
                 {
-                    <option value="@customer.ID"> @customer.FirstName @customer.LastName </option>
+                    <option value="@customer.ID"> @customer.GetString() </option>
                 }
             </select>
         </div>

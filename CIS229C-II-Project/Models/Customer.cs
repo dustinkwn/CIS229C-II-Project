@@ -9,7 +9,7 @@ namespace CIS229C_II_Project.Models
     {
         public string GetString()
         {
-            return FirstName + " " + LastName;
+            return ID + " - " + FirstName + " " + LastName;
         }
         public Customer() { }
 
