@@ -39,6 +39,14 @@ namespace CIS229C_II_Project.Controllers
             ServiceDataAccess serviceData = new ServiceDataAccess();
             bool success = serviceData.EditService(ServiceID, ServiceName, ServiceDescription, ServicePrice);
             List<Models.Service> servicesList = serviceData.GetServiceList();
+            if (success)
+            {
+                ViewBag.Message = "Service successfully created.";
+            }
+            else
+            {
+                ViewBag.Message = "Error creating service";
+            }
             return View(servicesList);
         }
         [HttpGet]
@@ -60,7 +68,6 @@ namespace CIS229C_II_Project.Controllers
         [HttpPost]
         public ActionResult DeleteService(int ServiceID)
         {
-            //
             ServiceDataAccess dataAccess = new ServiceDataAccess();
             bool success = dataAccess.DeleteService(ServiceID);
 
